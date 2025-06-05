@@ -7,6 +7,11 @@ import { DocentesModule } from './docentes/docentes.module';
 import { ConsultasModule } from './consultas/consultas.module';
 import { PrismaModule } from './prisma/prisma.module'; // Importa PrismaModule
 import { CarrerasModule } from './carreras/carreras.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module'; // Asegúrate de importar RolesModule
+
+
 
 @Module({
   imports: [
@@ -15,7 +20,10 @@ import { CarrerasModule } from './carreras/carreras.module';
     DocentesModule,
     ConsultasModule,
     PrismaModule,
-    CarrerasModule, // Asegúrate de importar PrismaModule
+    CarrerasModule,
+    AuthModule,
+    RolesModule,
+    UsersModule, // Asegúrate de importar PrismaModule
   ],
   controllers: [AppController],
   providers: [AppService], // Elimina PrismaService de aquí

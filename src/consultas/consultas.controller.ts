@@ -1,9 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { ConsultasService } from './consultas.service';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('consultas')
 @Controller('consultas')
+@UseGuards(RolesGuard)
+@Roles('admin', 'docente', 'secretaria')
 export class ConsultasController {
   constructor(private readonly consultasService: ConsultasService) {}
 

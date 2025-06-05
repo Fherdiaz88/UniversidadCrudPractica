@@ -5,13 +5,20 @@ import { PrismaService } from '../prisma/prisma.service';
 export class CarrerasService {
   constructor(private prisma: PrismaService) {}
 
+
+
   create(data: { nombre: string }) {
     return this.prisma.carrera.create({ data });
   }
 
-  findAll() {
-    return this.prisma.carrera.findMany();
-  }
+findAll(page = 1, limit = 10) {
+  const skip = (page - 1) * limit;
+  return this.prisma.carrera.findMany({
+    skip,
+    take: limit,
+  });
+}
+
 
   findOne(id: number) {
     return this.prisma.carrera.findUnique({ where: { id } });
