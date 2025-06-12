@@ -1,5 +1,6 @@
   import { Injectable } from '@nestjs/common';
   import { PrismaService } from '../prisma/prisma.service';
+  import { PaginationDto } from '../common/dto/pagination.dto';
 
   @Injectable()
   export class EstudiantesService {
@@ -53,4 +54,31 @@
     remove(id: number) {
       return this.prisma.estudiante.delete({ where: { id } });
     }
+
+   async findPaginated(paginationDto: PaginationDto) {
+  const { limit = 10, offset = 0 } = paginationDto;
+
+  const [data, total] = await Promise.all([
+    this.prisma.estudiante.findMany({
+      skip: offset,
+      take: limit,
+      include: {
+        carrera: true,
+        inscripciones: {
+          include: {
+            materia: true,
+          },
+        },
+      },
+    }),
+    this.prisma.estudiante.count(),
+  ]);
+
+  return {
+    total,
+    data,
+  };
+}
+  
+
   }

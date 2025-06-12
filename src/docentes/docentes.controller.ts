@@ -4,10 +4,10 @@ import { DocentesService } from './docentes.service';
 import { CreateDocenteDto } from './create-docente.dto';
 import { UpdateDocenteDto } from './update-docente.dto';
 import { Roles } from '../auth/roles.decorator';
-import { Permissions } from '../auth/permissions.decorator';
+import { Permissions } from '../permissions/permissions.decorator';
 import { RolesGuard } from '../auth/roles.guard';
-import { PermissionsGuard } from '../auth/permissions.guard';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PermissionsGuard } from '../permissions/permissions.guard';
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth('access-token')

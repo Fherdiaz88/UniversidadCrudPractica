@@ -1,13 +1,18 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
 import { EstudiantesService } from './estudiantes.service';
-import { CreateEstudianteDto } from './create-estudiante.dto';
-import { UpdateEstudianteDto } from './update-estudiante.dto';
+import { CreateEstudianteDto } from './dto/create-estudiante.dto';
+import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { Roles } from '../auth/roles.decorator';
-import { Permissions } from '../auth/permissions.decorator';
+import { Permissions } from '../permissions/permissions.decorator';
 import { RolesGuard } from '../auth/roles.guard';
-import { PermissionsGuard } from '../auth/permissions.guard';
+import { PermissionsGuard } from '../permissions/permissions.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { Query } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+
+
 
 
 @ApiBearerAuth('access-token')
@@ -17,7 +22,7 @@ export class EstudiantesController {
   constructor(private readonly estudiantesService: EstudiantesService) {}
 
   @Post()
-  @UseGuards(RolesGuard, PermissionsGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
   @Roles('admin', 'secretaria')
   @Permissions('create_estudiante')
   @ApiOperation({ summary: 'Crear un estudiante' })
@@ -25,6 +30,13 @@ export class EstudiantesController {
   create(@Body() data: CreateEstudianteDto) {
     return this.estudiantesService.create(data);
   }
+
+
+ @Get('paginated')
+findPaginated(@Query() paginationDto: PaginationDto) {
+  return this.estudiantesService.findPaginated(paginationDto);
+}
+
 
   @Get()
   @UseGuards(RolesGuard)
